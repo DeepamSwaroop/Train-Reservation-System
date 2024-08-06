@@ -1,0 +1,120 @@
+Easy Level Questions 
+
+--Find all reservations made for the train 'Rajdhani_Express'.
+
+select *
+from Reservation
+where Train_name='Rajdhani_Express'
+
+-- List the names of all passengers traveling to 'Delhi'.
+
+select first_name,last_name 
+from Reservation
+where Destination_station='Delhi'
+
+--Count the number of reservations made for 'Mumbai'.
+
+select count(*)
+from Reservation
+where Destination_station='Mumbai'
+
+--Find the average fare for 'Express' trains.
+
+SELECT avg(fare)
+from Reservation
+where Train_type='Express'
+
+--List all reservations with a 'Confirmed' booking status.
+
+select *
+from Reservation
+where Booking_status='Confirmed'
+
+--Find the total fare collected for the train 'Garib_Rath'.
+
+SELECT sum(fare)
+from Reservation
+where Train_name='Garib_Rath'
+
+--Find the total number of seats allocated for 'Superfast' trains.
+
+SELECT sum(Seat_alloted)
+from Reservation
+where Train_type='Superfast'
+
+--List the count of passengers who have booked meals.
+
+SELECT count(*)
+from Reservation
+where Is_Meal_booked='Yes'
+
+--List the count of passengers who booked 'Offline'.
+
+SELECT count(*)
+from Reservation
+where Payment_mode='Offline'
+
+--Count the number of reservations with a 'Waiting' booking status.
+
+SELECT count(*)
+from Reservation
+where Booking_status='Waiting'
+
+---------------------------------------------------Medium ------------------------------------------
+
+--Find the train with the most reservations.
+
+select top 1 Train_name,COUNT(*)
+from Reservation
+group by Train_name
+order by COUNT(*) desc
+
+select train_name from (select Train_name,ROW_NUMBER() over (ORDER by COUNT(*) desc)rn
+from Reservation
+group by Train_name
+)h where rn=1
+
+--Find the average fare for each train type ('Express' and 'Superfast').
+
+select train_type,avg(fare)
+from Reservation
+where Train_type in ('Express' , 'Superfast')
+group by Train_type
+
+select 
+    avg(case when Train_type = 'Express' then fare end) as express_avg,
+    avg(case when Train_type = 'Superfast' then fare end) as superfast_avg
+from Reservation;
+
+--List the trains that have reservations with a duration of more than 10 hours.
+
+select Train_id,Train_name
+from Reservation
+where (Duration_minutes/60) >10
+
+
+
+--Find the top 3 trains with the highest total fare collected.
+
+select top 3 train_name,sum(fare) as total_fair
+from Reservation
+group by train_name
+order by sum(fare) desc
+
+--List the first and last names of passengers who have booked more than once.
+
+select First_name,Last_name from 
+( select First_name,Last_name,count(*) as count
+from Reservation
+GROUP by First_name,Last_name
+HAVING count(*)>1
+)h
+
+--Find the top 3 states with the highest total fare collected and list the total fare for each.
+
+SELECT top 3 State, SUM(fare) AS Total_Fare
+FROM Reservation
+GROUP BY State
+ORDER BY Total_Fare DESC
+
+--
