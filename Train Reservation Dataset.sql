@@ -27,7 +27,7 @@ CREATE TABLE [dbo].[Reservation](
 	[City] [text] NULL,
 	[Duration_minutes] [int] NULL,
 	[Payment_mode] [varchar](10) NULL,
-	[Fair] [int] NULL,
+	[Fare] [int] NULL,
 	[Booking_status] [varchar](15) NULL,
 	[Is_Meal_booked] [varchar](10) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
